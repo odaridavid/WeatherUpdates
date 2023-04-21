@@ -14,7 +14,7 @@ class DefaultWeatherRepository @Inject constructor(
 
         val response = openMeteoService.getWeatherData(latitude = 0.0, longitude = 0.0)
 
-        // TODO Improve error handling
+        // TODO Improve error handling and load daily data
         if (response.isSuccessful && response.body() != null) {
             val weatherData = response.body()!!.toCoreModel()
             emit(Result.success(weatherData))

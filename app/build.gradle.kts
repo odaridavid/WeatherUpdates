@@ -33,18 +33,18 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
     buildFeatures {
         compose = true
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.3.2"
+        kotlinCompilerExtensionVersion = "1.4.6"
     }
     packaging {
         resources {
@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
+    implementation(libs.navigation)
 
     implementation(libs.retrofit)
     implementation(libs.okhttp.logging.interceptor)
@@ -77,6 +78,7 @@ dependencies {
     testImplementation(libs.truth)
     testImplementation(libs.turbine)
     testImplementation(libs.mockk.agent)
+    testImplementation(libs.coroutines.test)
     testImplementation(libs.mockk.android)
     debugImplementation(libs.ui.tooling)
 }

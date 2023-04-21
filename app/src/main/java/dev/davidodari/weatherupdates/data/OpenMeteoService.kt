@@ -11,7 +11,8 @@ interface OpenMeteoService {
     suspend fun getWeatherData(
         @Query("latitude") latitude: Double,
         @Query("longitude") longitude: Double,
-        @Query("temperature_unit") temperatureUnit: String = Units.METRIC.value
+        @Query("temperature_unit") temperatureUnit: String = Units.METRIC.value,
+        @Query("forecast_days") forecastDays: Int = 7
     ): Response<WeatherResponse>
 
 }

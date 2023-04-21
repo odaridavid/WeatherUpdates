@@ -20,6 +20,7 @@ turbine = "0.12.1"
 mockk = "1.13.3"
 truth = "1.1.3"
 coroutines-test = "1.6.4"
+navigation = "2.5.3"
 
 
 [libraries]
@@ -40,6 +41,7 @@ ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
+navigation = { module = "androidx.navigation:navigation-compose", name = "navigation", version.ref = "navigation" }
 #Retrofit
 retrofit = { module = "com.squareup.retrofit2:retrofit", name = "retrofit", version.ref = "retrofit" }
 #Okhttp

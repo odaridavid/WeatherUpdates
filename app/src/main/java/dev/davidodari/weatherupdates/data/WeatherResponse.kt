@@ -29,3 +29,8 @@ data class CurrentWeatherResponse(
     @SerialName("time") val time: String,
     @SerialName("temperature_2m") val temperature: Float
 )
+
+@Serializable
+data class ErrorResponse(
+    @SerialName("reason") val reason: String
+)
