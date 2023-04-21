@@ -10,7 +10,7 @@ data class Weather(
 
 data class HourlyWeather(val data: Pair<String, String>)
 data class DailyWeather(val data: Pair<String, WeatherInfo>)
-// TODO Fix this data class
+// TODO Fix this data class to be compatible with everything.
 data class WeatherInfo(val temperature: String, val time: String)
 
 data class Error(val errorMessage: String)

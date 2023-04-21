@@ -47,7 +47,7 @@ fun HomeScreen(
         if (state.error != null) {
             Spacer(modifier = Modifier.weight(0.5f))
             ErrorText(
-                error = state.error,
+                errorId = state.error,
                 modifier = Modifier.padding(MaterialTheme.sizing.medium)
             ) {
                 onTryAgainClicked()
@@ -74,9 +74,9 @@ private fun HomeTopBar(cityName: String) {
 }
 
 @Composable
-private fun ErrorText(error: Throwable, modifier: Modifier, onTryAgainClicked: () -> Unit) {
+private fun ErrorText(errorId: Int, modifier: Modifier, onTryAgainClicked: () -> Unit) {
     Text(
-        text = error.message ?: stringResource(id = R.string.home_error_occurred_generic),
+        text = stringResource(id = errorId),
         textAlign = TextAlign.Center,
         modifier = modifier,
         style = MaterialTheme.typography.bodyMedium
