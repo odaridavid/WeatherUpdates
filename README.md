@@ -74,12 +74,30 @@ is written that makes use of fake,so as to mimic the real scenario as much as po
   *Tooling/Project setup*
 - [Hilt(DI)](https://developer.android.com/training/dependency-injection/hilt-android)
 
+# More to do on this codebase 
+
+1. Time formatting i.e current time, 12hr / 24hr system.
+2. Split debug and release build i.e Better app icon for debug and release and other environment settings.
+3. Integrate CI Pipeline with lint checks,code formatting and code signing
+4. Better issue observability i.e logging errors on a dashboard somewhere and following user session journeys.
+5. Fine grained error handling for API errors.
+6. Setup for performance monitoring i.e Baseline Profiles, Memory Check i.e leak canary etc.
+7. Notification for weather alerts and current day forecast.
+8. Support for a weather widget
+9. Consume more API data once current feature set is polished i.e humidity,wind speed etc.
+10. Ability to select multiple locations
+11. Process improvements i.e PR templates/Setup Linting with detekt/ktlint
+12. Look into cache and eviction strategies i.e make the app offline first and refresh the data after 15/30 min, Room + WorkManager combo.
+13. Handle no network available,tie in with unique exception handling.
+14. Translate for currently supported languages ,i.e strings in res and days of the week.
+15. Convert Longitude/Latitude to location name
 
 # Screenshots 📱
 
 ```kotlin
 TODO("Add Screenshots Here")
 ```
+
 
 
 ![](https://media.giphy.com/media/hWvk9iUU4uBBeyBq0k/giphy.gif)
