@@ -1,4 +1,4 @@
-package dev.davidodari.weatherupdates
+package dev.davidodari.weatherupdates.data
 
 data class Coordinate(val latitude: Double, val longitude: Double)
 

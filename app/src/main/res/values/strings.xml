@@ -7,4 +7,9 @@
     <string name="home_max_temp">Max %1$s</string>
     <string name="home_error_occurred_generic">Ooops! An issue occurred on our end:(</string>
     <string name="home_error_try_again">Try Again</string>
+    <string name="error_unauthorized">You don\'t have access to this resource</string>
+    <string name="error_generic">You don\'t have access to this resource</string>
+    <string name="error_connection">Check your connection and try again</string>
+    <string name="error_client">Ooops! Check your request and try again</string>
+    <string name="error_server">Ooops! We are currently experiencing problems ,Please check again later.</string>
 </resources>
