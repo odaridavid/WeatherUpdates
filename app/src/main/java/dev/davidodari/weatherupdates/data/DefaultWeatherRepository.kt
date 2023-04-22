@@ -46,12 +46,10 @@ class DefaultWeatherRepository @Inject constructor(
     }
 
     override fun startPolling() {
-        Log.i("Poling", "Started")
         isPolling.compareAndSet(false, true)
     }
 
     override fun stopPolling() {
-        Log.i("Poling", "Stopped")
         isPolling.compareAndSet(true, false)
     }
 

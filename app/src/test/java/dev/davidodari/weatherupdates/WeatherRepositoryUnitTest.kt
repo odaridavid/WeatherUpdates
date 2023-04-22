@@ -1,27 +1,179 @@
 package dev.davidodari.weatherupdates
 
+import app.cash.turbine.test
+import com.google.common.truth.Truth
 import dev.davidodari.weatherupdates.core.api.WeatherRepository
+import dev.davidodari.weatherupdates.core.model.Weather
+import dev.davidodari.weatherupdates.data.ApiResult
 import dev.davidodari.weatherupdates.data.DefaultWeatherRepository
 import dev.davidodari.weatherupdates.data.OpenMeteoService
+import dev.davidodari.weatherupdates.data.WeatherResponse
+import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
+import io.mockk.spyk
+import io.mockk.verify
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Test
+import retrofit2.Response
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class WeatherRepositoryUnitTest {
 
     @MockK
     val mockOpenMeteoService = mockk<OpenMeteoService>(relaxed = true)
 
     @Test
-    fun `when we fetch weather data successfully, then a successfully mapped result is emitted`() {
-        TODO()
-    }
+    fun `when we fetch weather data successfully, then a successfully mapped result is emitted`() =
+        runTest {
+            val weatherRepository = createWeatherRepository()
 
+            coEvery {
+                mockOpenMeteoService.getWeatherData(
+                    any(),
+                    any(),
+                    any(),
+                    any(),
+                    any(),
+                    any()
+                )
+            } returns Response.success(fakeSuccessWeatherResponse)
+
+            weatherRepository.fetchWeatherData().test {
+                awaitItem().also { result ->
+                    Truth.assertThat(result).isInstanceOf(ApiResult.Success::class.java)
+                    Truth.assertThat((result as ApiResult.Success).data).isEqualTo(
+                        fakeSuccessMappedWeatherResponse
+                    )
+                }
+            }
+        }
 
     @Test
-    fun `when we fetch weather data and an error occurs, then an error is emitted`()  {
-        TODO()
+    fun `when we fetch weather data and a server error occurs, then a server error is emitted`() =
+        runTest {
+            val weatherRepository = createWeatherRepository()
+
+            coEvery {
+                mockOpenMeteoService.getWeatherData(
+                    any(),
+                    any(),
+                    any(),
+                    any(),
+                    any(),
+                    any()
+                )
+            } returns Response.error(
+                505,
+                "{}".toResponseBody()
+            )
+
+            weatherRepository.fetchWeatherData().test {
+                awaitItem().also { result ->
+                    Truth.assertThat(result).isInstanceOf(ApiResult.Error::class.java)
+                    Truth.assertThat((result as ApiResult.Error).messageId)
+                        .isEqualTo(R.string.error_server)
+                }
+            }
+        }
+
+    @Test
+    fun `when we fetch weather data and a client error occurs, then a client error is emitted`() =
+        runTest {
+            val weatherRepository = createWeatherRepository()
+
+            coEvery {
+                mockOpenMeteoService.getWeatherData(
+                    any(),
+                    any(),
+                    any(),
+                    any(),
+                    any(),
+                    any()
+                )
+            } returns Response.error(
+                404,
+                "{}".toResponseBody()
+            )
+
+            weatherRepository.fetchWeatherData().test {
+                awaitItem().also { result ->
+                    Truth.assertThat(result).isInstanceOf(ApiResult.Error::class.java)
+                    Truth.assertThat((result as ApiResult.Error).messageId)
+                        .isEqualTo(R.string.error_client)
+                }
+            }
+        }
+
+    @Test
+    fun `when we fetch weather data and a unauthorized error occurs, then unauthorized error is emitted`() =
+        runTest {
+            val weatherRepository = createWeatherRepository()
+
+            coEvery {
+                mockOpenMeteoService.getWeatherData(
+                    any(),
+                    any(),
+                    any(),
+                    any(),
+                    any(),
+                    any()
+                )
+            } returns Response.error(
+                401,
+                "{}".toResponseBody()
+            )
+
+            weatherRepository.fetchWeatherData().test {
+                awaitItem().also { result ->
+                    Truth.assertThat(result).isInstanceOf(ApiResult.Error::class.java)
+                    Truth.assertThat((result as ApiResult.Error).messageId)
+                        .isEqualTo(R.string.error_unauthorized)
+                }
+            }
+        }
+
+    @Test
+    fun `when we fetch weather data and an error occurs, then a generic error is emitted`() =
+        runTest {
+            val weatherRepository = createWeatherRepository()
+
+            coEvery {
+                mockOpenMeteoService.getWeatherData(
+                    any(),
+                    any(),
+                    any(),
+                    any(),
+                    any(),
+                    any()
+                )
+            } returns Response.error(
+                909,
+                "{}".toResponseBody()
+            )
+
+            weatherRepository.fetchWeatherData().test {
+                awaitItem().also { result ->
+                    Truth.assertThat(result).isInstanceOf(ApiResult.Error::class.java)
+                    Truth.assertThat((result as ApiResult.Error).messageId)
+                        .isEqualTo(R.string.error_generic)
+                }
+            }
+        }
+
+    @Test
+    fun `when we receive an error, then stop polling`() {
+        // TODO
+    }
+
+    @Test
+    fun `when we fetch data, then start polling`() {
+        // TODO
     }
 
     private fun createWeatherRepository(): WeatherRepository = DefaultWeatherRepository(

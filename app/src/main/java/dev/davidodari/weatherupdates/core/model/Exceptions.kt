@@ -3,7 +3,6 @@ package dev.davidodari.weatherupdates.core.model
 import androidx.annotation.StringRes
 
 //TODO Better naming, exception could be from local or wherever else
-//TODO Test this
 sealed class ApiException(@StringRes open val messageId: Int) {
     data class UnauthorizedException(@StringRes override val messageId: Int) : ApiException(messageId)
 
