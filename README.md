@@ -108,6 +108,7 @@ mocks, which would also turn it to a unit test.
 11. Process improvements i.e PR templates/Setup Linting with detekt/ktlint
 12. Translate for currently supported languages ,i.e strings in res.
 13. Convert Longitude/Latitude to location name
+14. Convert hard coded values in the service interface to user preference 
 
 # Screenshots 📱
 
