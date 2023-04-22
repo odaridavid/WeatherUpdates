@@ -28,5 +28,5 @@ data class HourlyUnitsResponse(
 @Serializable
 data class CurrentWeatherResponse(
     @SerialName("time") val time: String,
-    @SerialName("temperature_2m") val temperature: Float
+    @SerialName("temperature") val temperature: Float
 )
