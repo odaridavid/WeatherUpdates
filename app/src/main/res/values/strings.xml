@@ -2,7 +2,6 @@
     <string name="app_name">WeatherUpdates</string>
     <string name="home_title_currently">Currently</string>
     <string name="home_today_forecast_title">Today\'s Forecast</string>
-    <string name="home_weekly_forecast_title">Weekly Forecast</string>
     <string name="home_min_temp">Min %1$s</string>
     <string name="home_max_temp">Max %1$s</string>
     <string name="home_error_occurred_generic">Ooops! An issue occurred on our end:(</string>

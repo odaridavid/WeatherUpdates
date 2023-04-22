@@ -4,15 +4,9 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.davidodari.weatherupdates.R
 import dev.davidodari.weatherupdates.core.api.WeatherRepository
 import dev.davidodari.weatherupdates.core.model.Weather
 import dev.davidodari.weatherupdates.data.ApiResult
-import dev.davidodari.weatherupdates.data.ClientException
-import dev.davidodari.weatherupdates.data.ConnectionException
-import dev.davidodari.weatherupdates.data.GenericException
-import dev.davidodari.weatherupdates.data.ServerException
-import dev.davidodari.weatherupdates.data.UnauthorizedException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,7 +20,6 @@ class HomeViewModel @Inject constructor(
 
     private val _state = MutableStateFlow(HomeScreenViewState(isLoading = true))
     val state: StateFlow<HomeScreenViewState> = _state.asStateFlow()
-
 
     fun processIntent(homeScreenIntent: HomeScreenIntent) {
         when (homeScreenIntent) {

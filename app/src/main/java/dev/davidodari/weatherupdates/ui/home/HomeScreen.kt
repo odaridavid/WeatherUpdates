@@ -17,10 +17,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import dev.davidodari.weatherupdates.R
-import dev.davidodari.weatherupdates.ui.theme.sizing
+import dev.davidodari.weatherupdates.core.model.CurrentWeather
+import dev.davidodari.weatherupdates.core.model.HourlyWeather
+import dev.davidodari.weatherupdates.core.model.WeatherInfo
+import dev.davidodari.weatherupdates.ui.theme.Sizing
 
-// TODO Fix my composition local problem with material extending sizing
+//TODO Fix my composition local problem with material extending sizing
 @Composable
 fun HomeScreen(
     state: HomeScreenViewState,
@@ -31,14 +35,14 @@ fun HomeScreen(
             .verticalScroll(rememberScrollState())
             .fillMaxSize()
     ) {
-        // TODO Convert location coordinates to city name
+        //TODO Convert location coordinates to city name
         HomeTopBar(cityName = "-")
 
         if (state.isLoading) {
             Spacer(modifier = Modifier.weight(0.5f))
             CircularProgressIndicator(
                 modifier = Modifier
-                    .padding(MaterialTheme.sizing.medium)
+                    .padding(Sizing.medium)
                     .align(Alignment.CenterHorizontally)
             )
             Spacer(modifier = Modifier.weight(0.5f))
@@ -46,15 +50,70 @@ fun HomeScreen(
 
         if (state.error != null) {
             Spacer(modifier = Modifier.weight(0.5f))
-            ErrorText(
+            ErrorContent(
                 errorId = state.error,
-                modifier = Modifier.padding(MaterialTheme.sizing.medium)
+                modifier = Modifier.padding(Sizing.medium)
             ) {
                 onTryAgainClicked()
             }
             Spacer(modifier = Modifier.weight(0.5f))
         }
-        // todo display data
+
+        state.weather?.currentWeather?.let { currentWeather ->
+            CurrentWeatherWidget(currentWeather)
+        }
+        state.weather?.hourlyWeather?.let { hourlyWeather ->
+            HourlyWeatherWidget(hourlyWeather)
+        }
+    }
+}
+
+@Composable
+private fun HourlyWeatherWidget(hourlyWeather: HourlyWeather) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(Sizing.medium)
+    ) {
+        Text(
+            text = stringResource(R.string.home_today_forecast_title),
+            style = MaterialTheme.typography.headlineSmall
+        )
+        for (weatherInfo in hourlyWeather.data) {
+            HourlyWeatherRow(hourlyWeather = weatherInfo)
+        }
+    }
+}
+
+@Composable
+fun HourlyWeatherRow(hourlyWeather: WeatherInfo) {
+    Row(
+        modifier = Modifier
+            .padding(Sizing.small)
+            .fillMaxWidth()
+    ) {
+        Text(text = hourlyWeather.time)
+        Text(text = hourlyWeather.temperature)
+    }
+}
+
+@Composable
+private fun CurrentWeatherWidget(currentWeather: CurrentWeather) {
+    Column {
+        Text(
+            text = stringResource(R.string.home_title_currently),
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .padding(vertical = 8.dp),
+            style = MaterialTheme.typography.headlineSmall
+        )
+        Text(
+            text = currentWeather.temperature,
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .padding(vertical = 8.dp),
+            style = MaterialTheme.typography.titleMedium
+        )
     }
 }
 
@@ -62,30 +121,37 @@ fun HomeScreen(
 private fun HomeTopBar(cityName: String) {
     Row(
         modifier = Modifier
-            .padding(MaterialTheme.sizing.medium)
+            .padding(Sizing.medium)
             .fillMaxWidth()
     ) {
         Text(
             text = cityName,
             style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier.padding(MaterialTheme.sizing.small)
+            modifier = Modifier.padding(Sizing.small)
         )
     }
 }
 
 @Composable
-private fun ErrorText(errorId: Int, modifier: Modifier, onTryAgainClicked: () -> Unit) {
-    Text(
-        text = stringResource(id = errorId),
-        textAlign = TextAlign.Center,
-        modifier = modifier,
-        style = MaterialTheme.typography.bodyMedium
-    )
-    Button(onClick = { onTryAgainClicked() }) {
+private fun ErrorContent(errorId: Int, modifier: Modifier, onTryAgainClicked: () -> Unit) {
+    Column(modifier = Modifier.fillMaxWidth()) {
         Text(
-            text = stringResource(R.string.home_error_try_again),
-            style = MaterialTheme.typography.bodyMedium,
-            textAlign = TextAlign.Center
+            text = stringResource(id = errorId),
+            textAlign = TextAlign.Center,
+            modifier = modifier.align(Alignment.CenterHorizontally),
+            style = MaterialTheme.typography.bodyMedium
         )
+        Button(
+            onClick = { onTryAgainClicked() },
+            modifier = Modifier
+                .padding(Sizing.medium)
+                .align(Alignment.CenterHorizontally)
+        ) {
+            Text(
+                text = stringResource(R.string.home_error_try_again),
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
