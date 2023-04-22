@@ -109,12 +109,14 @@ mocks, which would also turn it to a unit test.
 12. Translate for currently supported languages ,i.e strings in res.
 13. Convert Longitude/Latitude to location name
 14. Convert hard coded values in the service interface to user preference 
+15. Improve UI , have Icons and stuff.
 
 # Screenshots 📱
 
-```kotlin
-TODO("Add Screenshots Here")
-```
+<img src="/docs/screenshots/ss1.png" width="300px"> <img src="/docs/screenshots/ss2.png" width="300px">
+
+
+<img src="/docs/screenshots/error.png" width="300px">
 
 ![](https://media.giphy.com/media/hWvk9iUU4uBBeyBq0k/giphy.gif)
 

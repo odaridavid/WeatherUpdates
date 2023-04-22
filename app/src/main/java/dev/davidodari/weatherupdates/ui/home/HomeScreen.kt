@@ -92,8 +92,9 @@ fun HourlyWeatherRow(hourlyWeather: WeatherInfo) {
             .padding(Sizing.small)
             .fillMaxWidth()
     ) {
-        Text(text = hourlyWeather.time)
-        Text(text = hourlyWeather.temperature)
+        Text(text = hourlyWeather.time, modifier = Modifier.padding(Sizing.small))
+        Spacer(modifier = Modifier.weight(1.0f))
+        Text(text = hourlyWeather.temperature, modifier = Modifier.padding(Sizing.small))
     }
 }
 
@@ -103,16 +104,17 @@ private fun CurrentWeatherWidget(currentWeather: CurrentWeather) {
         Text(
             text = stringResource(R.string.home_title_currently),
             modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .padding(vertical = 8.dp),
-            style = MaterialTheme.typography.headlineSmall
+                .padding(horizontal = Sizing.medium)
+                .padding(vertical = Sizing.small),
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.tertiary
         )
         Text(
             text = currentWeather.temperature,
             modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .padding(vertical = 8.dp),
-            style = MaterialTheme.typography.titleMedium
+                .padding(horizontal = Sizing.medium)
+                .padding(vertical = Sizing.small),
+            style = MaterialTheme.typography.displayMedium
         )
     }
 }

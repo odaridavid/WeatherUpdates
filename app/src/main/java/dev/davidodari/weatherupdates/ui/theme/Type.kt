@@ -1,13 +1,12 @@
 package dev.davidodari.weatherupdates.ui.theme
 
+import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import dev.davidodari.weatherupdates.R
-import androidx.compose.material3.Typography
 
 private val fonts = FontFamily(
     Font(R.font.rubik_regular),
@@ -16,95 +15,107 @@ private val fonts = FontFamily(
 )
 
 val typography = typographyFromDefaults(
-    h1 = TextStyle(
+    displayLarge = TextStyle(
         fontFamily = fonts,
         fontWeight = FontWeight.Bold
     ),
-    h2 = TextStyle(
+    displayMedium = TextStyle(
         fontFamily = fonts,
         fontWeight = FontWeight.Bold
     ),
-    h3 = TextStyle(
+    displaySmall = TextStyle(
         fontFamily = fonts,
         fontWeight = FontWeight.Bold
     ),
-    h4 = TextStyle(
+    headlineLarge = TextStyle(
         fontFamily = fonts,
         fontWeight = FontWeight.Bold,
         lineHeight = 40.sp
     ),
-    h5 = TextStyle(
+    headlineMedium = TextStyle(
         fontFamily = fonts,
         fontWeight = FontWeight.Bold
     ),
-    h6 = TextStyle(
+    headlineSmall = TextStyle(
         fontFamily = fonts,
         fontWeight = FontWeight.W500,
         lineHeight = 28.sp
     ),
-    subtitle1 = TextStyle(
+    titleLarge = TextStyle(
         fontFamily = fonts,
         fontWeight = FontWeight.W500,
         lineHeight = 22.sp
     ),
-    subtitle2 = TextStyle(
+    titleMedium = TextStyle(
         fontFamily = fonts,
         fontWeight = FontWeight.W500
     ),
-    body1 = TextStyle(
+    titleSmall = TextStyle(
+        fontFamily = fonts,
+        fontWeight = FontWeight.W500
+    ),
+    bodyLarge = TextStyle(
         fontFamily = fonts,
         fontWeight = FontWeight.Normal,
         lineHeight = 28.sp
     ),
-    body2 = TextStyle(
+    bodyMedium = TextStyle(
         fontFamily = fonts,
         fontWeight = FontWeight.Normal,
         lineHeight = 16.sp
     ),
-    button = TextStyle(
+    bodySmall = TextStyle(
+        fontFamily = fonts,
+        fontWeight = FontWeight.Normal,
+        lineHeight = 16.sp
+    ),
+    labelLarge = TextStyle(
         fontFamily = fonts,
         fontWeight = FontWeight.Bold
     ),
-    caption = TextStyle(
-        fontFamily = fonts
+    labelMedium = TextStyle(
+        fontFamily = fonts,
+        fontWeight = FontWeight.Bold
     ),
-    overline = TextStyle(
-        letterSpacing = 0.08.em
+    labelSmall = TextStyle(
+        fontFamily = fonts,
+        fontWeight = FontWeight.Bold
     )
 )
 
 fun typographyFromDefaults(
-    h1: TextStyle?,
-    h2: TextStyle?,
-    h3: TextStyle?,
-    h4: TextStyle?,
-    h5: TextStyle?,
-    h6: TextStyle?,
-    subtitle1: TextStyle?,
-    subtitle2: TextStyle?,
-    body1: TextStyle?,
-    body2: TextStyle?,
-    button: TextStyle?,
-    caption: TextStyle?,
-    overline: TextStyle?
+    displayLarge: TextStyle?,
+    displayMedium: TextStyle?,
+    displaySmall: TextStyle?,
+    headlineLarge: TextStyle?,
+    headlineMedium: TextStyle?,
+    headlineSmall: TextStyle?,
+    titleLarge: TextStyle?,
+    titleMedium: TextStyle?,
+    titleSmall: TextStyle?,
+    bodyLarge: TextStyle?,
+    bodyMedium: TextStyle?,
+    bodySmall: TextStyle?,
+    labelLarge: TextStyle?,
+    labelMedium: TextStyle?,
+    labelSmall: TextStyle?,
 ): Typography {
     val defaults = Typography()
-    // TODO Fix this
     return Typography(
-        displayLarge = defaults.displayLarge.merge(),
-        displayMedium = defaults.displayMedium.merge(),
-        displaySmall = defaults.displaySmall.merge(),
-        headlineLarge = defaults.headlineLarge.merge(),
-        headlineMedium = defaults.headlineMedium.merge(),
-        headlineSmall = defaults.headlineSmall.merge(),
-        titleLarge = defaults.titleLarge.merge(),
-        titleMedium = defaults.titleMedium.merge(),
-        titleSmall = defaults.titleSmall.merge(),
-        bodyLarge = defaults.bodyLarge.merge(),
-        bodyMedium = defaults.bodyMedium.merge(),
-        bodySmall = defaults.bodySmall.merge(),
-        labelLarge = defaults.labelLarge.merge(),
-        labelMedium = defaults.labelMedium.merge(),
-        labelSmall = defaults.labelSmall.merge()
+        displayLarge = defaults.displayLarge.merge(displayLarge),
+        displayMedium = defaults.displayMedium.merge(displayMedium),
+        displaySmall = defaults.displaySmall.merge(displaySmall),
+        headlineLarge = defaults.headlineLarge.merge(headlineLarge),
+        headlineMedium = defaults.headlineMedium.merge(headlineMedium),
+        headlineSmall = defaults.headlineSmall.merge(headlineSmall),
+        titleLarge = defaults.titleLarge.merge(titleLarge),
+        titleMedium = defaults.titleMedium.merge(titleMedium),
+        titleSmall = defaults.titleSmall.merge(titleSmall),
+        bodyLarge = defaults.bodyLarge.merge(bodyLarge),
+        bodyMedium = defaults.bodyMedium.merge(bodyMedium),
+        bodySmall = defaults.bodySmall.merge(bodySmall),
+        labelLarge = defaults.labelLarge.merge(labelLarge),
+        labelMedium = defaults.labelMedium.merge(labelMedium),
+        labelSmall = defaults.labelSmall.merge(labelSmall)
     )
 }
