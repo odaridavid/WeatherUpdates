@@ -14,10 +14,11 @@ val fakeSuccessWeatherResponse = WeatherResponse(
     latitude = 10.11,
     timezone = "aeque",
     hourly = HourlyResponse(
-        time = "",
-        temperature = 12.13f,
+        times = listOf(),
+        temperatures = listOf(),
     ),
     hourlyUnits = HourlyUnitsResponse(
+        time = "",
         temperature = "",
     ),
     currentWeather = CurrentWeatherResponse(
@@ -30,9 +31,8 @@ val fakeSuccessWeatherResponse = WeatherResponse(
 val fakeSuccessMappedWeatherResponse = Weather(
     latitude = 0.0,
     longitude = 0.0,
-    hourlyWeather = HourlyWeather(data = Pair("", "")),
+    hourlyWeather = HourlyWeather(data = listOf()),
     currentWeather = CurrentWeather(
         temperature = "",
-        time = ""
     )
 )
