@@ -21,8 +21,6 @@ fun WeatherAppDestinationsConfig(
                 .collectAsState()
                 .value
 
-            homeViewModel.processIntent(HomeScreenIntent.LoadWeatherData)
-
             HomeScreen(
                 state = state,
                 onTryAgainClicked = { homeViewModel.processIntent(HomeScreenIntent.LoadWeatherData) }

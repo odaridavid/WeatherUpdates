@@ -30,6 +30,9 @@ class HomeViewModel @Inject constructor(
                     }
                 }
             }
+            is HomeScreenIntent.CancelWeatherDataPolling -> {
+                weatherRepository.stopPolling()
+            }
         }
     }
 

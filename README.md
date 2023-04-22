@@ -97,8 +97,7 @@ mocks, which would also turn it to a unit test.
 3. Time formatting i.e current time, 12hr / 24hr system.
 4. Look into cache and eviction strategies i.e make the app offline first and refresh the data after
    15/30 min, Room + WorkManager combo.
-5. Better issue observability i.e logging errors on a dashboard somewhere and following user session
-   journeys.
+5. Better issue observability i.e logging errors in Repository on a dashboard somewhere i.e Crashlytics
 6. Setup for performance monitoring i.e Baseline Profiles, Memory Check i.e leak canary etc.
 7. Notification for weather alerts and current day forecast.
 8. Support for a weather widget
@@ -110,6 +109,7 @@ mocks, which would also turn it to a unit test.
 13. Convert Longitude/Latitude to location name
 14. Convert hard coded values in the service interface to user preference 
 15. Improve UI , have Icons and stuff.
+16. Use real location and setup permissions flow.
 
 # Screenshots 📱
 
