@@ -2,7 +2,8 @@
 
 *Summary*
 
-A weather app that displays the forecast for the current day and loads new weather data for different coordinates every 10 seconds.
+A weather app that displays the forecast for the current day and loads new weather data for
+different coordinates every 10 seconds.
 
 *API :* [OpenMeteo](https://open-meteo.com/)
 
@@ -59,10 +60,10 @@ The folders are split into 4 boundaries:
 
 **Testing**
 
-The data layer is unit tested by mocking out external dependencies and the ui layer on the
-viewmodels, an integration test
-is written that makes use of fake,so as to mimic the real scenario as much as possible over using
-mocks, which would also turn it to a unit test.
+The data layer is unit tested by mocking out external dependencies i.e The Api Service Interface
+The ui layer on the viewmodels, has a mix of unit and integration test with the repository being the
+real one but with swapped dependencies.
+There are no instrumented or connected tests for now but would be nice for an end to end testing approach.
 
 # Technologies 🔨
 
@@ -73,7 +74,6 @@ mocks, which would also turn it to a unit test.
   *UI*
 
 - [Compose](https://developer.android.com/jetpack/compose)
-- [Coil](https://coil-kt.github.io/coil/compose/https://coil-kt.github.io/coil/compose/)
 
   *Data*
 - [Retrofit](https://square.github.io/retrofit/)
@@ -97,7 +97,8 @@ mocks, which would also turn it to a unit test.
 3. Time formatting i.e current time, 12hr / 24hr system.
 4. Look into cache and eviction strategies i.e make the app offline first and refresh the data after
    15/30 min, Room + WorkManager combo.
-5. Better issue observability i.e logging errors in Repository on a dashboard somewhere i.e Crashlytics
+5. Better issue observability i.e logging errors in Repository on a dashboard somewhere i.e
+   Crashlytics
 6. Setup for performance monitoring i.e Baseline Profiles, Memory Check i.e leak canary etc.
 7. Notification for weather alerts and current day forecast.
 8. Support for a weather widget
@@ -107,7 +108,7 @@ mocks, which would also turn it to a unit test.
 11. Process improvements i.e PR templates/Setup Linting with detekt/ktlint
 12. Translate for currently supported languages ,i.e strings in res.
 13. Convert Longitude/Latitude to location name
-14. Convert hard coded values in the service interface to user preference 
+14. Convert hard coded values in the service interface to user preference
 15. Improve UI , have Icons and stuff.
 16. Use real location and setup permissions flow.
 17. Look into how network and battery consumption is affected by this
