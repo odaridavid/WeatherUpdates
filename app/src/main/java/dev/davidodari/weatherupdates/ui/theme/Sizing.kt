@@ -1,8 +1,8 @@
 package dev.davidodari.weatherupdates.ui.theme
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.unit.dp
 
+//TODO Make part of material theme through extension
 object Sizing {
     val large = 32.dp
     val medium = 16.dp
@@ -11,5 +11,3 @@ object Sizing {
     val none = 0.dp
 }
 
-val MaterialTheme.sizing
-    get() = Sizing
