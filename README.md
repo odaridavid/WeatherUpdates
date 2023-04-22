@@ -2,7 +2,7 @@
 
 *Summary*
 
-A simple weather app that displays the forecast for the current day.
+A weather app that displays the forecast for the current day and loads new weather data for different coordinates every 10 seconds.
 
 *API :* [OpenMeteo](https://open-meteo.com/)
 
@@ -110,6 +110,7 @@ mocks, which would also turn it to a unit test.
 14. Convert hard coded values in the service interface to user preference 
 15. Improve UI , have Icons and stuff.
 16. Use real location and setup permissions flow.
+17. Look into how network and battery consumption is affected by this
 
 # Screenshots 📱
 
