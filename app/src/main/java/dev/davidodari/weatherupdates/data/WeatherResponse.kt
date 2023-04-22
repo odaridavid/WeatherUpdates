@@ -15,12 +15,13 @@ data class WeatherResponse(
 
 @Serializable
 data class HourlyResponse(
-    @SerialName("time") val time: String,
-    @SerialName("temperature_2m") val temperature: Float
+    @SerialName("time") val times: List<String>,
+    @SerialName("temperature_2m") val temperatures: List<Float>
 )
 
 @Serializable
 data class HourlyUnitsResponse(
+    @SerialName("time") val time: String,
     @SerialName("temperature_2m") val temperature: String
 )
 
@@ -28,9 +29,4 @@ data class HourlyUnitsResponse(
 data class CurrentWeatherResponse(
     @SerialName("time") val time: String,
     @SerialName("temperature_2m") val temperature: Float
-)
-
-@Serializable
-data class ErrorResponse(
-    @SerialName("reason") val reason: String
 )
