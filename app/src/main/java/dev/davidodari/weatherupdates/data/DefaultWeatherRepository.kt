@@ -1,9 +1,7 @@
 package dev.davidodari.weatherupdates.data
 
-import android.util.Log
 import dev.davidodari.weatherupdates.R
 import dev.davidodari.weatherupdates.core.api.WeatherRepository
-import dev.davidodari.weatherupdates.core.model.ApiException
 import dev.davidodari.weatherupdates.core.model.Weather
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -38,11 +36,11 @@ class DefaultWeatherRepository @Inject constructor(
         }
     }.catch { throwable ->
         stopPolling()
-        val mappedException = when (throwable) {
-            is IOException -> ApiException.ConnectionException(R.string.error_connection)
-            else -> ApiException.GenericException(R.string.error_generic)
+        val errorMessage = when (throwable) {
+            is IOException -> R.string.error_connection
+            else -> R.string.error_generic
         }
-        emit(ApiResult.Error(mappedException.messageId))
+        emit(ApiResult.Error(errorMessage))
     }
 
     override fun startPolling() {
@@ -64,17 +62,17 @@ class DefaultWeatherRepository @Inject constructor(
             emit(ApiResult.Success(data = weatherData))
         } else {
             stopPolling()
-            val mappedException = mapResponseCodeToExceptions(response)
-            emit(ApiResult.Error(messageId = mappedException.messageId))
+            val errorMessage = mapResponseCodeToErrorMessage(response)
+            emit(ApiResult.Error(messageId = errorMessage))
         }
     }
 
-    private fun mapResponseCodeToExceptions(response: Response<WeatherResponse>): ApiException {
+    private fun mapResponseCodeToErrorMessage(response: Response<WeatherResponse>): Int {
         val mappedException = when (response.code()) {
-            HTTP_UNAUTHORIZED -> ApiException.UnauthorizedException(R.string.error_unauthorized)
-            in 400..499 -> ApiException.ClientException(R.string.error_client)
-            in 500..600 -> ApiException.ServerException(R.string.error_server)
-            else -> ApiException.GenericException(R.string.error_generic)
+            HTTP_UNAUTHORIZED -> R.string.error_unauthorized
+            in 400..499 -> R.string.error_client
+            in 500..600 -> R.string.error_server
+            else -> R.string.error_generic
         }
         return mappedException
     }
