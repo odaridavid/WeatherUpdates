@@ -21,6 +21,7 @@ import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Test
 import retrofit2.Response
+import java.io.IOException
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class WeatherRepositoryUnitTest {
@@ -165,6 +166,54 @@ class WeatherRepositoryUnitTest {
                 }
             }
         }
+
+    @Test
+    fun `when we fetch weather data and an IOException is thrown, then a connection error is emitted`() = runBlocking {
+        coEvery {
+            mockOpenMeteoService.getWeatherData(
+                any(),
+                any(),
+                any(),
+                any(),
+                any(),
+                any()
+            )
+        } throws IOException()
+
+        val weatherRepository = createWeatherRepository()
+
+        weatherRepository.fetchWeatherData().test {
+            awaitItem().also { result ->
+                Truth.assertThat(result).isInstanceOf(ApiResult.Error::class.java)
+                Truth.assertThat((result as ApiResult.Error).messageId).isEqualTo(R.string.error_connection)
+            }
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `when we fetch weather data and an unknown Exception is thrown, then a generic error is emitted`() = runBlocking {
+        coEvery {
+            mockOpenMeteoService.getWeatherData(
+                any(),
+                any(),
+                any(),
+                any(),
+                any(),
+                any()
+            )
+        } throws Exception()
+
+        val weatherRepository = createWeatherRepository()
+
+        weatherRepository.fetchWeatherData().test {
+            awaitItem().also { result ->
+                Truth.assertThat(result).isInstanceOf(ApiResult.Error::class.java)
+                Truth.assertThat((result as ApiResult.Error).messageId).isEqualTo(R.string.error_generic)
+            }
+            awaitComplete()
+        }
+    }
 
     @Test
     fun `when we receive an error, then stop polling`() {
