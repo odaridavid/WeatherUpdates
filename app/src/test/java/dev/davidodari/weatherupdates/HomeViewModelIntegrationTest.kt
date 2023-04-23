@@ -6,6 +6,7 @@ import dev.davidodari.weatherupdates.core.api.WeatherRepository
 import dev.davidodari.weatherupdates.data.ApiResult
 import dev.davidodari.weatherupdates.data.DefaultWeatherRepository
 import dev.davidodari.weatherupdates.data.OpenMeteoService
+import dev.davidodari.weatherupdates.data.PollingService
 import dev.davidodari.weatherupdates.ui.home.HomeScreenIntent
 import dev.davidodari.weatherupdates.ui.home.HomeScreenViewState
 import dev.davidodari.weatherupdates.ui.home.HomeViewModel
@@ -44,7 +45,7 @@ class HomeViewModelIntegrationTest {
             )
         } returns Response.success(fakeSuccessWeatherResponse)
 
-        val repository = DefaultWeatherRepository(openMeteoService = mockOpenMeteoService)
+        val repository = DefaultWeatherRepository(openMeteoService = mockOpenMeteoService,pollingService = PollingService)
 
         val viewModel = createViewModel(repository)
 
@@ -80,7 +81,7 @@ class HomeViewModelIntegrationTest {
                 "{}".toResponseBody()
             )
 
-            val repository = DefaultWeatherRepository(openMeteoService = mockOpenMeteoService)
+            val repository = DefaultWeatherRepository(openMeteoService = mockOpenMeteoService,pollingService = PollingService)
 
             val viewModel = createViewModel(repository)
 
@@ -101,7 +102,7 @@ class HomeViewModelIntegrationTest {
 
     @Test
     fun `when we init the screen, then update the state`() = runBlocking {
-        val repository = DefaultWeatherRepository(openMeteoService = mockOpenMeteoService)
+        val repository = DefaultWeatherRepository(openMeteoService = mockOpenMeteoService, pollingService = PollingService)
 
         val viewModel = createViewModel(repository)
 
@@ -116,16 +117,18 @@ class HomeViewModelIntegrationTest {
     fun `when the app is stopped, then polling stops`() {
         val repository = mockk<WeatherRepository>()
 
-        every { repository.stopPolling() } returns Unit
-
-        val viewModel = createViewModel(repository)
+        val viewModel = createViewModel(repository, pollingService = PollingService)
 
         viewModel.processIntent(HomeScreenIntent.CancelWeatherDataPolling)
 
-        verify { repository.stopPolling() }
+        Truth.assertThat(PollingService.isPolling()).isFalse()
     }
 
-    private fun createViewModel(repository: WeatherRepository): HomeViewModel = HomeViewModel(
-        weatherRepository = repository
+    private fun createViewModel(
+        repository: WeatherRepository,
+        pollingService: PollingService = PollingService
+    ): HomeViewModel = HomeViewModel(
+        weatherRepository = repository,
+        pollingService = pollingService
     )
 }

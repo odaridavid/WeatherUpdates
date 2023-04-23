@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.davidodari.weatherupdates.core.api.WeatherRepository
 import dev.davidodari.weatherupdates.core.model.Weather
 import dev.davidodari.weatherupdates.data.ApiResult
+import dev.davidodari.weatherupdates.data.PollingService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val weatherRepository: WeatherRepository
+    private val weatherRepository: WeatherRepository,
+    private val pollingService: PollingService
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeScreenViewState(isLoading = true))
@@ -30,15 +32,16 @@ class HomeViewModel @Inject constructor(
                     }
                 }
             }
+
             is HomeScreenIntent.CancelWeatherDataPolling -> {
-                weatherRepository.stopPolling()
+                pollingService.stopPolling()
             }
         }
     }
 
     private fun processResult(result: ApiResult<Weather>) {
-        when(result) {
-           is ApiResult.Success -> {
+        when (result) {
+            is ApiResult.Success -> {
                 val weatherData = result.data
                 setState {
                     copy(

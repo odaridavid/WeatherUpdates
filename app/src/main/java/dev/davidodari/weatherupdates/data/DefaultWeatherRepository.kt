@@ -16,14 +16,14 @@ import javax.inject.Inject
 
 class DefaultWeatherRepository @Inject constructor(
     private val openMeteoService: OpenMeteoService,
+    private val pollingService: PollingService
 ) : WeatherRepository {
 
-    private var isPolling: AtomicBoolean = AtomicBoolean(true)
     private val TEN_SECONDS = 10_000L
     override fun fetchWeatherData(): Flow<ApiResult<Weather>> = flow {
-        startPolling()
+        pollingService.startPolling()
         var currentWeatherCoordinatesIndex = 0
-        while (isPolling.get()) {
+        while (pollingService.isPolling()) {
             val coordinate = coordinates[currentWeatherCoordinatesIndex]
             fetchFromApi(coordinate = coordinate)
             if (currentWeatherCoordinatesIndex == coordinates.lastIndex) {
@@ -35,20 +35,12 @@ class DefaultWeatherRepository @Inject constructor(
             delay(TEN_SECONDS)
         }
     }.catch { throwable ->
-        stopPolling()
+        pollingService.stopPolling()
         val errorMessage = when (throwable) {
             is IOException -> R.string.error_connection
             else -> R.string.error_generic
         }
         emit(ApiResult.Error(errorMessage))
-    }
-
-    override fun startPolling() {
-        isPolling.compareAndSet(false, true)
-    }
-
-    override fun stopPolling() {
-        isPolling.compareAndSet(true, false)
     }
 
     private suspend fun FlowCollector<ApiResult<Weather>>.fetchFromApi(coordinate: Coordinate) {
@@ -61,7 +53,7 @@ class DefaultWeatherRepository @Inject constructor(
             val weatherData = response.body()!!.toCoreModel()
             emit(ApiResult.Success(data = weatherData))
         } else {
-            stopPolling()
+            pollingService.stopPolling()
             val errorMessage = mapResponseCodeToErrorMessage(response.code())
             emit(ApiResult.Error(messageId = errorMessage))
         }

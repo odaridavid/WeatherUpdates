@@ -7,6 +7,7 @@ import dev.davidodari.weatherupdates.core.model.Weather
 import dev.davidodari.weatherupdates.data.ApiResult
 import dev.davidodari.weatherupdates.data.DefaultWeatherRepository
 import dev.davidodari.weatherupdates.data.OpenMeteoService
+import dev.davidodari.weatherupdates.data.PollingService
 import dev.davidodari.weatherupdates.data.WeatherResponse
 import io.mockk.coEvery
 import io.mockk.every
@@ -168,31 +169,59 @@ class WeatherRepositoryUnitTest {
         }
 
     @Test
-    fun `when we fetch weather data and an IOException is thrown, then a connection error is emitted`() = runBlocking {
-        coEvery {
-            mockOpenMeteoService.getWeatherData(
-                any(),
-                any(),
-                any(),
-                any(),
-                any(),
-                any()
-            )
-        } throws IOException()
+    fun `when we fetch weather data and an IOException is thrown, then a connection error is emitted`() =
+        runBlocking {
+            coEvery {
+                mockOpenMeteoService.getWeatherData(
+                    any(),
+                    any(),
+                    any(),
+                    any(),
+                    any(),
+                    any()
+                )
+            } throws IOException()
 
-        val weatherRepository = createWeatherRepository()
+            val weatherRepository = createWeatherRepository()
 
-        weatherRepository.fetchWeatherData().test {
-            awaitItem().also { result ->
-                Truth.assertThat(result).isInstanceOf(ApiResult.Error::class.java)
-                Truth.assertThat((result as ApiResult.Error).messageId).isEqualTo(R.string.error_connection)
+            weatherRepository.fetchWeatherData().test {
+                awaitItem().also { result ->
+                    Truth.assertThat(result).isInstanceOf(ApiResult.Error::class.java)
+                    Truth.assertThat((result as ApiResult.Error).messageId)
+                        .isEqualTo(R.string.error_connection)
+                }
+                awaitComplete()
             }
-            awaitComplete()
         }
-    }
 
     @Test
-    fun `when we fetch weather data and an unknown Exception is thrown, then a generic error is emitted`() = runBlocking {
+    fun `when we fetch weather data and an unknown Exception is thrown, then a generic error is emitted`() =
+        runBlocking {
+            coEvery {
+                mockOpenMeteoService.getWeatherData(
+                    any(),
+                    any(),
+                    any(),
+                    any(),
+                    any(),
+                    any()
+                )
+            } throws Exception()
+
+            val weatherRepository = createWeatherRepository()
+
+            weatherRepository.fetchWeatherData().test {
+                awaitItem().also { result ->
+                    Truth.assertThat(result).isInstanceOf(ApiResult.Error::class.java)
+                    Truth.assertThat((result as ApiResult.Error).messageId)
+                        .isEqualTo(R.string.error_generic)
+                }
+                awaitComplete()
+            }
+        }
+
+    @Test
+    fun `when we receive an error, then stop polling`() = runTest {
         coEvery {
             mockOpenMeteoService.getWeatherData(
                 any(),
@@ -207,26 +236,38 @@ class WeatherRepositoryUnitTest {
         val weatherRepository = createWeatherRepository()
 
         weatherRepository.fetchWeatherData().test {
-            awaitItem().also { result ->
-                Truth.assertThat(result).isInstanceOf(ApiResult.Error::class.java)
-                Truth.assertThat((result as ApiResult.Error).messageId).isEqualTo(R.string.error_generic)
-            }
+            awaitItem()
             awaitComplete()
         }
+
+        Truth.assertThat(PollingService.isPolling()).isFalse()
     }
 
     @Test
-    fun `when we receive an error, then stop polling`() {
-        // TODO
-    }
+    fun `when we fetch data, then start polling`() = runTest {
+        coEvery {
+            mockOpenMeteoService.getWeatherData(
+                any(),
+                any(),
+                any(),
+                any(),
+                any(),
+                any()
+            )
+        } returns Response.success(fakeSuccessWeatherResponse)
 
-    @Test
-    fun `when we fetch data, then start polling`() {
-        // TODO
+        val weatherRepository = createWeatherRepository()
+
+        weatherRepository.fetchWeatherData().test {
+            awaitItem()
+        }
+
+        Truth.assertThat(PollingService.isPolling()).isTrue()
     }
 
     private fun createWeatherRepository(): WeatherRepository = DefaultWeatherRepository(
-        openMeteoService = mockOpenMeteoService
+        openMeteoService = mockOpenMeteoService,
+        pollingService = PollingService
     )
 
 }

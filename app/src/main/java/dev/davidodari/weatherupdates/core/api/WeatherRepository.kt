@@ -6,8 +6,4 @@ import kotlinx.coroutines.flow.Flow
 
 interface WeatherRepository {
     fun fetchWeatherData(): Flow<ApiResult<Weather>>
-
-    fun startPolling()
-
-    fun stopPolling()
 }
