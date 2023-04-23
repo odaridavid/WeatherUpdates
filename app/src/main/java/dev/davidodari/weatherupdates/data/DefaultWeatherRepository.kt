@@ -62,19 +62,19 @@ class DefaultWeatherRepository @Inject constructor(
             emit(ApiResult.Success(data = weatherData))
         } else {
             stopPolling()
-            val errorMessage = mapResponseCodeToErrorMessage(response)
+            val errorMessage = mapResponseCodeToErrorMessage(response.code())
             emit(ApiResult.Error(messageId = errorMessage))
         }
     }
 
-    private fun mapResponseCodeToErrorMessage(response: Response<WeatherResponse>): Int {
-        val mappedException = when (response.code()) {
+    private fun mapResponseCodeToErrorMessage(responseCode: Int): Int {
+        val errorMessage = when (responseCode) {
             HTTP_UNAUTHORIZED -> R.string.error_unauthorized
             in 400..499 -> R.string.error_client
             in 500..600 -> R.string.error_server
             else -> R.string.error_generic
         }
-        return mappedException
+        return errorMessage
     }
 
 }
