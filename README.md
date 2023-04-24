@@ -115,7 +115,8 @@ approach.
 
 # Screenshots 📱
 
-<video src="/docs/screenshots/geocode.mp4" width="300px" controls="controls" > </video>
+
+<img src="/docs/screenshots/gge.gif" width="300px">
 
 
 <img src="/docs/screenshots/error.png" width="300px">
