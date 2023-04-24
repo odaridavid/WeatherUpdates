@@ -10,7 +10,7 @@ different coordinates every 10 seconds.
 # Pre-requisite 📝
 
 ```kotlin
-// None
+// Built from A.S Giraffe
 ```
 
 # Design/Architectural decisions 📐

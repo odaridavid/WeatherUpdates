@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -22,21 +23,31 @@ import dev.davidodari.weatherupdates.R
 import dev.davidodari.weatherupdates.core.model.CurrentWeather
 import dev.davidodari.weatherupdates.core.model.HourlyWeather
 import dev.davidodari.weatherupdates.core.model.WeatherInfo
+import dev.davidodari.weatherupdates.ui.getCityName
 import dev.davidodari.weatherupdates.ui.theme.Sizing
 
 //TODO Fix my composition local problem with material extending sizing
 @Composable
 fun HomeScreen(
     state: HomeScreenViewState,
-    onTryAgainClicked: () -> Unit
+    onTryAgainClicked: () -> Unit,
+    onAddressReceived: (String) -> Unit
 ) {
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
             .fillMaxSize()
     ) {
-        //TODO Convert location coordinates to city name
-        HomeTopBar(cityName = "-")
+        state.weather?.let { weather ->
+            LocalContext.current.getCityName(
+                latitude = weather.latitude,
+                longitude = weather.longitude
+            ) { address ->
+                onAddressReceived(address.locality)
+            }
+        }
+
+        HomeTopBar(cityName = state.cityName)
 
         if (state.isLoading) {
             Spacer(modifier = Modifier.weight(0.5f))
@@ -123,8 +134,8 @@ private fun CurrentWeatherWidget(currentWeather: CurrentWeather) {
 private fun HomeTopBar(cityName: String) {
     Row(
         modifier = Modifier
-            .padding(Sizing.medium)
             .fillMaxWidth()
+            .padding(Sizing.small)
     ) {
         Text(
             text = cityName,

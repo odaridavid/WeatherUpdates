@@ -36,6 +36,10 @@ class HomeViewModel @Inject constructor(
             is HomeScreenIntent.CancelWeatherDataPolling -> {
                 pollingService.stopPolling()
             }
+
+            is HomeScreenIntent.OnCityNameReceived -> {
+                setState { copy(cityName = homeScreenIntent.cityName) }
+            }
         }
     }
 
@@ -72,6 +76,7 @@ class HomeViewModel @Inject constructor(
 }
 
 data class HomeScreenViewState(
+    val cityName: String = "-",
     val weather: Weather? = null,
     val isLoading: Boolean = false,
     @StringRes val error: Int? = null

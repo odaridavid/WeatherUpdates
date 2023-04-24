@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import dev.davidodari.weatherupdates.ui.getCityName
 import dev.davidodari.weatherupdates.ui.home.HomeScreenIntent
 import dev.davidodari.weatherupdates.ui.home.HomeViewModel
 import dev.davidodari.weatherupdates.ui.theme.WeatherAppTheme

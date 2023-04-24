@@ -3,5 +3,7 @@ package dev.davidodari.weatherupdates.ui.home
 sealed class HomeScreenIntent {
     object LoadWeatherData : HomeScreenIntent()
 
-    object CancelWeatherDataPolling: HomeScreenIntent()
+    data class OnCityNameReceived(val cityName: String) : HomeScreenIntent()
+
+    object CancelWeatherDataPolling : HomeScreenIntent()
 }
