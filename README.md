@@ -63,7 +63,8 @@ The folders are split into 4 boundaries:
 The data layer is unit tested by mocking out external dependencies i.e The Api Service Interface
 The ui layer on the viewmodels, has a mix of unit and integration test with the repository being the
 real one but with swapped dependencies.
-There are no instrumented or connected tests for now but would be nice for an end to end testing approach.
+There are no instrumented or connected tests for now but would be nice for an end to end testing
+approach.
 
 # Technologies 🔨
 
@@ -71,7 +72,7 @@ There are no instrumented or connected tests for now but would be nice for an en
 
 **Libraries :**
 
-  *UI*
+*UI*
 
 - [Compose](https://developer.android.com/jetpack/compose)
 
@@ -98,7 +99,8 @@ There are no instrumented or connected tests for now but would be nice for an en
 4. Look into cache and eviction strategies once it has more data i.e make the app offline first.
 5. Better issue observability i.e logging errors in Repository on a dashboard somewhere i.e
    Crashlytics
-6. Setup for performance monitoring i.e Baseline Profiles, Memory Check i.e leak canary etc & Look into how network and battery consumption is affected by polling.
+6. Setup for performance monitoring i.e Baseline Profiles, Memory Check i.e leak canary etc & Look
+   into how network and battery consumption is affected by polling.
 7. Notification for weather alerts and current day forecast.
 8. Support for a weather widget
 9. Map and Consume more API data once current feature set is polished i.e Weekly weather
@@ -106,13 +108,14 @@ There are no instrumented or connected tests for now but would be nice for an en
 10. Process improvements i.e PR templates/Setup Linting with detekt/ktlint
 11. Translations for currently supported languages ,i.e strings in res.
 12. Convert Longitude/Latitude to location name
-13. Convert hard coded values in the service interface to user preference such as metric vs imperial units.
+13. Convert hard coded values in the service interface to user preference such as metric vs imperial
+    units.
 14. Improve UI , have Icons and stuff.
 15. Use real locations & ability to select multiple locations + setup permissions flow.
 
 # Screenshots 📱
 
-<img src="/docs/screenshots/ss1.png" width="300px"> <img src="/docs/screenshots/ss2.png" width="300px">
+<video src="/docs/screenshots/geocode.mp4" width="300px" controls="controls" > </video>
 
 
 <img src="/docs/screenshots/error.png" width="300px">
