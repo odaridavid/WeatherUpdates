@@ -24,7 +24,7 @@ fun WeatherAppDestinationsConfig(
             HomeScreen(
                 state = state,
                 onTryAgainClicked = { homeViewModel.processIntent(HomeScreenIntent.LoadWeatherData) },
-                onAddressReceived = {homeViewModel.processIntent(HomeScreenIntent.OnCityNameReceived(cityName = it))}
+                onAddressReceived = {homeViewModel.processIntent(HomeScreenIntent.DisplayCityName(cityName = it))}
             )
         }
     }

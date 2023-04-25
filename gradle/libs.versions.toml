@@ -1,5 +1,5 @@
 [versions]
-com-android-application = "8.1.0-alpha11"
+com-android-application = "8.1.0-beta01"
 org-jetbrains-kotlin-android = "1.7.20"
 org-jetbrains-kotlin-plugin-serialization = "1.6.10"
 com-google-dagger-hilt-android = "2.44"

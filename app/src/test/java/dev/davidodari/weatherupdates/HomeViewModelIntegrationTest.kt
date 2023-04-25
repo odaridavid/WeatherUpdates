@@ -18,6 +18,7 @@ import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Rule
 import org.junit.Test
@@ -122,6 +123,26 @@ class HomeViewModelIntegrationTest {
         viewModel.processIntent(HomeScreenIntent.CancelWeatherDataPolling)
 
         Truth.assertThat(PollingService.isPolling()).isFalse()
+    }
+
+    @Test
+    fun `when we receive a city name, the state is updated with it`() = runTest {
+        val weatherRepository = mockk<WeatherRepository>()
+
+        val viewModel = createViewModel(weatherRepository)
+
+        val expectedState = HomeScreenViewState(
+            cityName = "Paradise",
+            isLoading = true
+        )
+
+        viewModel.processIntent(HomeScreenIntent.DisplayCityName(cityName = "Paradise"))
+
+        viewModel.state.test {
+            awaitItem().also { state ->
+                Truth.assertThat(state).isEqualTo(expectedState)
+            }
+        }
     }
 
     private fun createViewModel(

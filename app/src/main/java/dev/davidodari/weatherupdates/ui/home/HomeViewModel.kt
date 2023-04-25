@@ -37,7 +37,7 @@ class HomeViewModel @Inject constructor(
                 pollingService.stopPolling()
             }
 
-            is HomeScreenIntent.OnCityNameReceived -> {
+            is HomeScreenIntent.DisplayCityName -> {
                 setState { copy(cityName = homeScreenIntent.cityName) }
             }
         }
