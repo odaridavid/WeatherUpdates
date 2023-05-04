@@ -1,6 +1,6 @@
 [versions]
-com-android-application = "8.1.0-beta01"
-org-jetbrains-kotlin-android = "1.7.20"
+com-android-application = "8.2.0-alpha02"
+org-jetbrains-kotlin-android = "1.8.20"
 org-jetbrains-kotlin-plugin-serialization = "1.6.10"
 com-google-dagger-hilt-android = "2.44"
 core-ktx = "1.10.0"
@@ -57,7 +57,7 @@ hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hil
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "com-android-application" }
-org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version = "1.8.20" }
+org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
 org-jetbrains-kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "org-jetbrains-kotlin-plugin-serialization" }
 com-google-dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "com-google-dagger-hilt-android" }
 
