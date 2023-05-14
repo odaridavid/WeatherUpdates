@@ -25,8 +25,9 @@ import dev.davidodari.weatherupdates.core.model.HourlyWeather
 import dev.davidodari.weatherupdates.core.model.WeatherInfo
 import dev.davidodari.weatherupdates.ui.getCityName
 import dev.davidodari.weatherupdates.ui.theme.Sizing
+import dev.davidodari.weatherupdates.ui.theme.sizing
+import dev.davidodari.weatherupdates.ui.theme.weight
 
-//TODO Fix my composition local problem with material extending sizing
 @Composable
 fun HomeScreen(
     state: HomeScreenViewState,
@@ -50,24 +51,24 @@ fun HomeScreen(
         HomeTopBar(cityName = state.cityName)
 
         if (state.isLoading) {
-            Spacer(modifier = Modifier.weight(0.5f))
+            Spacer(modifier = Modifier.weight(MaterialTheme.weight.half))
             CircularProgressIndicator(
                 modifier = Modifier
-                    .padding(Sizing.medium)
+                    .padding(MaterialTheme.sizing.medium)
                     .align(Alignment.CenterHorizontally)
             )
-            Spacer(modifier = Modifier.weight(0.5f))
+            Spacer(modifier = Modifier.weight(MaterialTheme.weight.half))
         }
 
         if (state.error != null) {
-            Spacer(modifier = Modifier.weight(0.5f))
+            Spacer(modifier = Modifier.weight(MaterialTheme.weight.half))
             ErrorContent(
                 errorId = state.error,
-                modifier = Modifier.padding(Sizing.medium)
+                modifier = Modifier.padding(MaterialTheme.sizing.medium)
             ) {
                 onTryAgainClicked()
             }
-            Spacer(modifier = Modifier.weight(0.5f))
+            Spacer(modifier = Modifier.weight(MaterialTheme.weight.half))
         }
 
         state.weather?.currentWeather?.let { currentWeather ->
@@ -84,7 +85,7 @@ private fun HourlyWeatherWidget(hourlyWeather: HourlyWeather) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(Sizing.medium)
+            .padding(MaterialTheme.sizing.medium)
     ) {
         Text(
             text = stringResource(R.string.home_today_forecast_title),
@@ -100,12 +101,15 @@ private fun HourlyWeatherWidget(hourlyWeather: HourlyWeather) {
 fun HourlyWeatherRow(hourlyWeather: WeatherInfo) {
     Row(
         modifier = Modifier
-            .padding(Sizing.small)
+            .padding(MaterialTheme.sizing.small)
             .fillMaxWidth()
     ) {
-        Text(text = hourlyWeather.time, modifier = Modifier.padding(Sizing.small))
-        Spacer(modifier = Modifier.weight(1.0f))
-        Text(text = hourlyWeather.temperature, modifier = Modifier.padding(Sizing.small))
+        Text(text = hourlyWeather.time, modifier = Modifier.padding(MaterialTheme.sizing.small))
+        Spacer(modifier = Modifier.weight(MaterialTheme.weight.full))
+        Text(
+            text = hourlyWeather.temperature,
+            modifier = Modifier.padding(MaterialTheme.sizing.small)
+        )
     }
 }
 
@@ -115,16 +119,16 @@ private fun CurrentWeatherWidget(currentWeather: CurrentWeather) {
         Text(
             text = stringResource(R.string.home_title_currently),
             modifier = Modifier
-                .padding(horizontal = Sizing.medium)
-                .padding(vertical = Sizing.small),
+                .padding(horizontal = MaterialTheme.sizing.medium)
+                .padding(vertical = MaterialTheme.sizing.small),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.tertiary
         )
         Text(
             text = currentWeather.temperature,
             modifier = Modifier
-                .padding(horizontal = Sizing.medium)
-                .padding(vertical = Sizing.small),
+                .padding(horizontal = MaterialTheme.sizing.medium)
+                .padding(vertical = MaterialTheme.sizing.small),
             style = MaterialTheme.typography.displayMedium
         )
     }
@@ -135,12 +139,12 @@ private fun HomeTopBar(cityName: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(Sizing.small)
+            .padding(MaterialTheme.sizing.small)
     ) {
         Text(
             text = cityName,
             style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier.padding(Sizing.small)
+            modifier = Modifier.padding(MaterialTheme.sizing.small)
         )
     }
 }
@@ -157,7 +161,7 @@ private fun ErrorContent(errorId: Int, modifier: Modifier, onTryAgainClicked: ()
         Button(
             onClick = { onTryAgainClicked() },
             modifier = Modifier
-                .padding(Sizing.medium)
+                .padding(MaterialTheme.sizing.medium)
                 .align(Alignment.CenterHorizontally)
         ) {
             Text(
