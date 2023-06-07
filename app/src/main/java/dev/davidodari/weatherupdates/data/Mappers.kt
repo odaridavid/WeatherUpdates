@@ -5,9 +5,8 @@ import dev.davidodari.weatherupdates.core.model.HourlyWeather
 import dev.davidodari.weatherupdates.core.model.Units
 import dev.davidodari.weatherupdates.core.model.Weather
 import dev.davidodari.weatherupdates.core.model.WeatherInfo
-import java.time.OffsetDateTime
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.Locale
 import kotlin.math.roundToInt
 
 fun WeatherResponse.toCoreModel(): Weather = Weather(
@@ -38,11 +37,12 @@ private fun mapDatesToHourly(hourly: HourlyResponse): HourlyWeather {
     return HourlyWeather(data = weatherInfoList)
 }
 
-// TODO Fix zone for date
 fun formattedDateToHourlyTime(time: String): String {
-    val odt = OffsetDateTime.parse(time + "Z")
-    val dtf = DateTimeFormatter.ofPattern("HH:mm", Locale.getDefault())
-    return dtf.format(odt)
+    val inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")
+    val outputFormat = DateTimeFormatter.ofPattern("HH:mm")
+
+    val dateTime: LocalDateTime = LocalDateTime.parse(time, inputFormat)
+    return dateTime.format(outputFormat)
 }
 
 private fun formatTemperatureValue(temperature: Float, unit: String): String =
