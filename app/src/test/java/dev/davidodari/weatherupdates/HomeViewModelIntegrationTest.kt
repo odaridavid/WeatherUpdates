@@ -3,7 +3,6 @@ package dev.davidodari.weatherupdates
 import app.cash.turbine.test
 import com.google.common.truth.Truth
 import dev.davidodari.weatherupdates.core.api.WeatherRepository
-import dev.davidodari.weatherupdates.data.ApiResult
 import dev.davidodari.weatherupdates.data.DefaultWeatherRepository
 import dev.davidodari.weatherupdates.data.OpenMeteoService
 import dev.davidodari.weatherupdates.data.PollingService
@@ -11,12 +10,9 @@ import dev.davidodari.weatherupdates.ui.home.HomeScreenIntent
 import dev.davidodari.weatherupdates.ui.home.HomeScreenViewState
 import dev.davidodari.weatherupdates.ui.home.HomeViewModel
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody.Companion.toResponseBody

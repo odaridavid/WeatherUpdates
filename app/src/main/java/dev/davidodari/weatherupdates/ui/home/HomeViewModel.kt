@@ -4,9 +4,11 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.davidodari.weatherupdates.R
 import dev.davidodari.weatherupdates.core.api.WeatherRepository
 import dev.davidodari.weatherupdates.core.model.Weather
-import dev.davidodari.weatherupdates.data.ApiResult
+import dev.davidodari.weatherupdates.data.ErrorType
+import dev.davidodari.weatherupdates.data.Result
 import dev.davidodari.weatherupdates.data.PollingService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -43,9 +45,9 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun processResult(result: ApiResult<Weather>) {
+    private fun processResult(result: Result<Weather>) {
         when (result) {
-            is ApiResult.Success -> {
+            is Result.Success -> {
                 val weatherData = result.data
                 setState {
                     copy(
@@ -56,15 +58,23 @@ class HomeViewModel @Inject constructor(
                 }
             }
 
-            is ApiResult.Error -> {
+            is Result.Error -> {
                 setState {
                     copy(
                         isLoading = false,
-                        error = result.messageId
+                        error = mapErrorTypeToResource(result.errorType)
                     )
                 }
             }
         }
+    }
+
+    private fun mapErrorTypeToResource(errorType: ErrorType): Int = when (errorType) {
+        ErrorType.GENERIC -> R.string.error_generic
+        ErrorType.IO_CONNECTION -> R.string.error_client
+        ErrorType.UNAUTHORIZED -> R.string.error_unauthorized
+        ErrorType.CLIENT -> R.string.error_client
+        ErrorType.SERVER -> R.string.error_server
     }
 
     private fun setState(stateReducer: HomeScreenViewState.() -> HomeScreenViewState) {
@@ -72,7 +82,6 @@ class HomeViewModel @Inject constructor(
             _state.emit(stateReducer(state.value))
         }
     }
-
 }
 
 data class HomeScreenViewState(

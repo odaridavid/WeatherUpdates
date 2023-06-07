@@ -1,6 +1,5 @@
 package dev.davidodari.weatherupdates.data
 
-import dev.davidodari.weatherupdates.R
 import dev.davidodari.weatherupdates.core.api.WeatherRepository
 import dev.davidodari.weatherupdates.core.model.Weather
 import kotlinx.coroutines.delay
@@ -8,10 +7,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
-import retrofit2.Response
 import java.io.IOException
 import java.net.HttpURLConnection.HTTP_UNAUTHORIZED
-import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 
 class DefaultWeatherRepository @Inject constructor(
@@ -20,7 +17,7 @@ class DefaultWeatherRepository @Inject constructor(
 ) : WeatherRepository {
 
     private val TEN_SECONDS = 10_000L
-    override fun fetchWeatherData(): Flow<ApiResult<Weather>> = flow {
+    override fun fetchWeatherData(): Flow<Result<Weather>> = flow {
         pollingService.startPolling()
         var currentWeatherCoordinatesIndex = 0
         while (pollingService.isPolling()) {
@@ -36,14 +33,14 @@ class DefaultWeatherRepository @Inject constructor(
         }
     }.catch { throwable ->
         pollingService.stopPolling()
-        val errorMessage = when (throwable) {
-            is IOException -> R.string.error_connection
-            else -> R.string.error_generic
+        val errorType = when (throwable) {
+            is IOException -> ErrorType.IO_CONNECTION
+            else -> ErrorType.GENERIC
         }
-        emit(ApiResult.Error(errorMessage))
+        emit(Result.Error(errorType))
     }
 
-    private suspend fun FlowCollector<ApiResult<Weather>>.fetchFromApi(coordinate: Coordinate) {
+    private suspend fun FlowCollector<Result<Weather>>.fetchFromApi(coordinate: Coordinate) {
         val response = openMeteoService.getWeatherData(
             latitude = coordinate.latitude,
             longitude = coordinate.longitude
@@ -51,22 +48,22 @@ class DefaultWeatherRepository @Inject constructor(
 
         if (response.isSuccessful && response.body() != null) {
             val weatherData = response.body()!!.toCoreModel()
-            emit(ApiResult.Success(data = weatherData))
+            emit(Result.Success(data = weatherData))
         } else {
             pollingService.stopPolling()
-            val errorMessage = mapResponseCodeToErrorMessage(response.code())
-            emit(ApiResult.Error(messageId = errorMessage))
+            val errorType = mapResponseCodeToErrorType(response.code())
+            emit(Result.Error(errorType = errorType))
         }
     }
 
-    private fun mapResponseCodeToErrorMessage(responseCode: Int): Int {
-        val errorMessage = when (responseCode) {
-            HTTP_UNAUTHORIZED -> R.string.error_unauthorized
-            in 400..499 -> R.string.error_client
-            in 500..600 -> R.string.error_server
-            else -> R.string.error_generic
+    private fun mapResponseCodeToErrorType(responseCode: Int): ErrorType {
+        val errorType = when (responseCode) {
+            HTTP_UNAUTHORIZED -> ErrorType.UNAUTHORIZED
+            in 400..499 -> ErrorType.CLIENT
+            in 500..600 -> ErrorType.SERVER
+            else -> ErrorType.GENERIC
         }
-        return errorMessage
+        return errorType
     }
 
 }
